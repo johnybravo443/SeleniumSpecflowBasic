@@ -15,22 +15,28 @@ namespace DemoWebApp.Tests
         private static readonly string PageUrl = @"http://localhost:40077/Home/StartLoanApplication";
 
         [FindsBy(How = How.Id, Using = "FirstName")]
-        private IWebElement _firstName;
+        private readonly IWebElement _firstName;
 
         [FindsBy(How = How.Id, Using = "LastName")]
-        private IWebElement _secondName;
+        private readonly IWebElement _secondName;
 
         [FindsBy(How = How.Id, Using = "Loan")]
-        private IWebElement _existingLoan;
+        private readonly IWebElement _existingAccountLoan;
+
+        [FindsBy(How = How.Id, Using = "None")]
+        private readonly IWebElement _existingAccountNone;
+
+        [FindsBy(How = How.Id, Using = "Savings")]
+        private readonly IWebElement _existingAccountSavings;
 
         [FindsBy(How = How.Name, Using = "TermsAcceptance")]
-        private IWebElement _termsAcceptance;
+        private readonly IWebElement _termsAcceptance;
 
         [FindsBy(How = How.CssSelector, Using = ".btn.btn-primary")]
-        private IWebElement _submit;
+        private readonly IWebElement _submit;
 
         [FindsBy(How = How.CssSelector, Using = ".validation-summary-errors ul li")]
-        private IWebElement _errorText;
+        private readonly IWebElement _errorText;
 
         public LoanApplicationPage(IWebDriver driver)
         {
@@ -63,10 +69,25 @@ namespace DemoWebApp.Tests
 
         public string ErrorText => _errorText.Text;
 
-        public void SelectExistingLoan()
+        public void SelectExistingLoan(ExistingAccount existingAccount)
         {
-            _existingLoan.Click();
+            if(existingAccount.ToString().Equals("Loan"))
+                _existingAccountLoan.Click();
+            else if(existingAccount.ToString().Equals("None"))
+                _existingAccountNone.Click();
+            else
+                _existingAccountSavings.Click();
         }
+
+        //public void SelectExistingNone()
+        //{
+        //    _existingAccountNone.Click();
+        //}
+
+        //public void SelectExistingSavings()
+        //{
+        //    _existingAccountSavings.Click();
+        //}
 
         public void AcceptTermsAndConditions()
         {
